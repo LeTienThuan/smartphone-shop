@@ -16,7 +16,7 @@ public class AccountDAO {
     public List<Account> findAll() throws SQLException {
         Connection connection = database.connect();
         List<Account> customers = new ArrayList<>();
-        String sql = "SELECT * FROM account";
+        String sql = "SELECT * FROM account_db";
         try {
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(sql);
@@ -43,7 +43,7 @@ public class AccountDAO {
 
     public boolean isEmailExist(String email) throws SQLException {
         Connection connection = database.connect();
-        String sql = "SELECT * FROM account WHERE email = ?";
+        String sql = "SELECT * FROM account_db WHERE email = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
@@ -62,14 +62,16 @@ public class AccountDAO {
     public Account findByEmail(String email) throws SQLException {
         Account account = new Account();
         Connection connection = database.connect();
-        String sql = "SELECT * FROM account WHERE email = ?";
+        String sql = "SELECT * FROM account_db WHERE email = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 account.setEmail(result.getString("email"));
+                account.setName(result.getString("name"));
                 account.setPassword(result.getString("password"));
+                account.setRole (result.getString("role_account"));
             }
             return account;
         } catch (SQLException e) {

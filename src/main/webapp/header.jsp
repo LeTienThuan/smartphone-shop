@@ -1,3 +1,6 @@
+<%@ page import="com.example.smartphoneshop.entities.Account" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!--[if lte IE 9]>
 <p class="browserupgrade">
 You are using an <strong>outdated</strong> browser. Please
@@ -65,18 +68,32 @@ your experience and security.
                 </div>
                 <div class="col-lg-4 col-md-4 col-12">
                     <div class="top-end">
-                        <div class="user">
-                            <i class="lni lni-user"></i>
-                            Hello
-                        </div>
-                        <ul class="user-login">
-                            <li>
-                                <a href="<%=request.getContextPath()+"/login"%>">Sign In</a>
-                            </li>
-                            <li>
-                                <a href="<%=request.getContextPath()+"/register"%>">Register</a>
-                            </li>
-                        </ul>
+                        <%Account account = (Account) session.getAttribute("account");%>
+                        <c:choose>
+                            <c:when test="<%=account != null%>">
+                                <ul class="user-login">
+                                    <li>
+                                        <i class="lni lni-user"></i>
+                                        <a href="<%=request.getContextPath()+"/user/profile"%>">
+                                            Hello <%=account.getName()%>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<%=request.getContextPath()+ "/logout"%>">Log out</a>
+                                    </li>
+                                </ul>
+                            </c:when>
+                            <c:otherwise>
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="<%=request.getContextPath()+"/login"%>">Sign In</a>
+                                    </li>
+                                    <li>
+                                        <a href="<%=request.getContextPath()+"/register"%>">Register</a>
+                                    </li>
+                                </ul>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -90,7 +107,7 @@ your experience and security.
                 <div class="col-lg-3 col-md-3 col-7">
                     <!-- Start Header Logo -->
                     <a class="navbar-brand" href="<%=request.getContextPath()%>">
-                        <img src="assets/images/logo/logo.svg" alt="Logo">
+                        <img src="${pageContext.request.contextPath}/assets/images/logo/logo.svg" alt="Logo">
                     </a>
                     <!-- End Header Logo -->
                 </div>
@@ -105,9 +122,6 @@ your experience and security.
                                         <option selected>All</option>
                                         <option value="1">option 01</option>
                                         <option value="2">option 02</option>
-                                        <option value="3">option 03</option>
-                                        <option value="4">option 04</option>
-                                        <option value="5">option 05</option>
                                     </select>
                                 </div>
                             </div>
